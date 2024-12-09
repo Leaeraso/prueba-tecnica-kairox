@@ -1,0 +1,26 @@
+{
+  "name": "prueba-tecnica-kairox",
+  "version": "1.0.0",
+  "description": "Prueba tecnica backend para la empresa kairox",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "tsc && node dist/main.js",
+    "start:dev": "tsc && concurrently \"tsc -w\" \"nodemon dist/main.js\"",
+    "start:prod": "SET NODE_ENV=production && npm start"
+  },
+  "author": "Leandro Eraso",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^9.1.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongoose": "^8.8.4",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.1.7"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/morgan": "^1.9.9"
+  }
+}
