@@ -4,8 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export class Connection {
-  private DB_HOST = process.env.DB_HOST!;
-  private DB_NAME = process.env.DB_NAME!;
+  private MONGO_DB_URI = process.env.MONGO_DB_URI!;
 
   constructor() {
     this.connect();
@@ -13,7 +12,7 @@ export class Connection {
 
   async connect() {
     try {
-      await mongoose.connect(`${this.DB_HOST}/${this.DB_NAME}`);
+      await mongoose.connect(`${this.MONGO_DB_URI}`);
       console.log('Database connected successfully');
     } catch (error) {
       console.error('Error connecting to the database:', error);

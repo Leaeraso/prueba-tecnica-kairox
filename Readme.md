@@ -1,4 +1,4 @@
-1- Trabajaria con metodología de POO en lugar de funcional, es mas limpio y legible el código.
+✅1- Trabajaria con metodología de POO en lugar de funcional, es mas limpio y legible el código.
 
 2- Los nombres de los archivos, se usa la convención kebab-case. Por ejemplo, en lugar de createCategory --> create-category. La convención de camel-case se usa nada mas para variables.
 

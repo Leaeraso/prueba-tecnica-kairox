@@ -2,6 +2,7 @@ import express from 'express';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 import { Connection } from './config/database/connection.database';
+import PagoRouter from './routers/pago.router';
 
 dotenv.config();
 
@@ -14,6 +15,7 @@ class Main {
     this.app = express();
     this.app.use(express.json());
     this.app.use(morgan('dev'));
+    this.app.use('/afiliado', PagoRouter);
 
     new Connection();
 
