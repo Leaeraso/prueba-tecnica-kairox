@@ -1,8 +1,8 @@
 import express, { NextFunction, Request, Response } from 'express';
 import MulterConfiguration from '../config/multer/multer.docs';
-import PagoService from '../services/pago-afiliado.service';
+import PagoService from '../services/affiliate-payment.service';
 
-class PagoRouter {
+class PaymentRouter {
   public router: express.Router;
 
   constructor() {
@@ -12,24 +12,28 @@ class PagoRouter {
 
   createRoutes(): void {
     this.router.post(
-      '/afiliado/pago',
+      '/affiliate/payment',
       MulterConfiguration.upload.single('file'),
-      this.handlePagoAfiliado.bind(this)
+      this.handleAffiliatePayment.bind(this)
     );
   }
 
-  private handlePagoAfiliado(req: Request, _res: Response, next: NextFunction) {
+  private handleAffiliatePayment(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
     console.log('obtiendo archivo...');
     const file: Express.Multer.File | undefined = req.file;
 
     if (!file) {
-      return next(new Error('Debe cargar un archivo'));
+      return next(new Error('Must load a file'));
     }
 
-    PagoService.setPagoAfiliado(file)
-      .then((res) => res)
+    PagoService.setAffiliatePayment(file)
+      .then((result) => res.json(result))
       .catch((err) => next(err));
   }
 }
 
-export default new PagoRouter().router;
+export default new PaymentRouter().router;

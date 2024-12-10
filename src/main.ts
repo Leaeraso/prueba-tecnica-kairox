@@ -2,7 +2,7 @@ import express from 'express';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 import { Connection } from './config/database/connection.database';
-import PagoRouter from './routers/pago.router';
+import PagoRouter from './routers/payment.router';
 
 dotenv.config();
 
