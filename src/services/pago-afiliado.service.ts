@@ -4,7 +4,9 @@ import PagoAfiliadoModel from '../data/models/pago-afiliado.models';
 import moment from 'moment';
 
 class PagoService {
-  async setPagoAfiliado(file: Express.Multer.File): Promise<void> {
+  async setPagoAfiliado(
+    file: Express.Multer.File
+  ): Promise<{ message: string }> {
     const filePath = path.join(__dirname, '../../dist/uploads', file.filename);
     const idsProcesados = new Set();
 
@@ -87,6 +89,7 @@ class PagoService {
       }
 
       console.log('Archivo procesado y pagos guardados exitosamente.');
+      return { message: 'archivo procesado con exito.' };
     } catch (error) {
       console.error('Error al procesar el archivo: ', error);
       throw new Error('No se ha podido procesar el archivo');

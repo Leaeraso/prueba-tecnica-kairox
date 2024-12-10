@@ -1,6 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express';
-import MulterConfiguration from '../config/docs/multer.docs';
-import PagoService from '../services/pago.service';
+import MulterConfiguration from '../config/multer/multer.docs';
+import PagoService from '../services/pago-afiliado.service';
 
 class PagoRouter {
   public router: express.Router;
@@ -12,34 +12,23 @@ class PagoRouter {
 
   createRoutes(): void {
     this.router.post(
-      '/pago',
+      '/afiliado/pago',
       MulterConfiguration.upload.single('file'),
       this.handlePagoAfiliado.bind(this)
     );
   }
 
-  private async handlePagoAfiliado(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) {
+  private handlePagoAfiliado(req: Request, _res: Response, next: NextFunction) {
     console.log('obtiendo archivo...');
     const file: Express.Multer.File | undefined = req.file;
 
-    if (file === undefined) {
+    if (!file) {
       return next(new Error('Debe cargar un archivo'));
     }
 
-    try {
-      console.log('llamando al servicio');
-      await PagoService.setPagoAfiliado(file);
-
-      res
-        .status(200)
-        .json({ message: 'Solicitud de pago procesada correctamente' });
-    } catch (error) {
-      next(error);
-    }
+    PagoService.setPagoAfiliado(file)
+      .then((res) => res)
+      .catch((err) => next(err));
   }
 }
 

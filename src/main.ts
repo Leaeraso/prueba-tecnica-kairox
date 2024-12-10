@@ -15,7 +15,7 @@ class Main {
     this.app = express();
     this.app.use(express.json());
     this.app.use(morgan('dev'));
-    this.app.use('/afiliado', PagoRouter);
+    this.app.use(PagoRouter);
 
     new Connection();
 
