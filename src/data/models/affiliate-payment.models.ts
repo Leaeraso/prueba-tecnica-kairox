@@ -5,7 +5,7 @@ export interface AffiliateI extends Document {
   affiliateId: number;
   name: string;
   email: string;
-  paymentDateTime: Date;
+  affiliateSince: Date;
   paymentTypeCode: number;
   paymentTypeDescription: string;
   transactionNumber: number;
@@ -34,7 +34,7 @@ class PagoAfiliadoModel {
         affiliateId: { type: Number, unique: false, required: true },
         name: { type: String, required: true },
         email: { type: String, required: true },
-        paymentDateTime: { type: Date, required: true },
+        affiliateSince: { type: Date, required: true },
         month: { type: String, required: true },
         year: { type: String, required: true },
         paymentTypeCode: { type: Number, required: true },
