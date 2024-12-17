@@ -64,7 +64,7 @@ class PaymentService {
           const paidBool = paid?.toLowerCase() === 'false';
 
           const existingPayent = await AffiliatePaymentModel.findOne({
-            affiliateId: parseInt(affiliateId),
+            affiliate_id: parseInt(affiliateId),
             month: new Date().getMonth(),
             year: new Date().getFullYear(),
           });
@@ -78,48 +78,48 @@ class PaymentService {
 
           // console.log(`Affiliate: {
           //   dni: ${dni},
-          //   affiliateId: ${affiliateId},
+          //   affiliate_id: ${affiliateId},
           //   name: ${name},
-          //   paymentDateTime: ${paymentDateTime},
-          //   paymentTypeCode: ${paymentTypeCode},
-          //   paymentTypeDescription: ${paymentTypeDescription},
-          //   transactionNumber: ${transactionNumber},
-          //   conceptDescription: ${conceptDescription},
-          //   netAmount: ${netAmount},
+          //   affiliate_since: ${affiliateSince},
+          //   payment_type_code: ${paymentTypeCode},
+          //   payment_type_description: ${paymentTypeDescription},
+          //   transaction_number: ${transactionNumber},
+          //   concept_description: ${conceptDescription},
+          //   net_amount: ${netAmount},
           //   taxes: ${taxes},
-          //   appliedRate: ${appliedRate},
-          //   referencePeriod: ${referencePeriod},
-          //   totalAmount: ${totalAmount},
-          //   paidAmount: ${paidAmount},
+          //   applied_rate: ${appliedRate},
+          //   reference_period: ${referencePeriod},
+          //   total_amount: ${totalAmount},
+          //   paid_amount: ${paidAmount},
           //   category: ${category},
-          //   hashId: ${hashId},
-          //   companyCUIT: ${companyCUIT},
+          //   hash_id: ${hashId},
+          //   company_CUIT: ${companyCUIT},
           //   paid: ${paid},
           //   }`);
 
           await AffiliatePaymentModel.create({
             dni: parseInt(dni),
-            affiliateId: parseInt(affiliateId),
+            affiliate_id: parseInt(affiliateId),
             name,
             email: `${name.toLowerCase().replace(/\s+/g, '')}@example.com`,
-            affiliateSince: affiliateSinceMoment,
+            affiliate_since: affiliateSinceMoment,
             month: new Date().getMonth(),
             year: new Date().getFullYear(),
-            paymentTypeCode: parseInt(paymentTypeCode),
+            payment_type_code: parseInt(paymentTypeCode),
             paymentTypeDescription,
-            transactionNumber: parseInt(transactionNumber),
+            transaction_number: parseInt(transactionNumber),
             conceptDescription,
-            netAmount: parseFloat(netAmount),
+            net_amount: parseFloat(netAmount),
             taxes: parseFloat(taxes),
-            appliedRate: parseFloat(appliedRate),
-            referencePeriod: parseInt(referencePeriod),
-            totalAmount: parseFloat(totalAmount),
-            paidAmount: parseFloat(paidAmount),
+            applied_rate: parseFloat(appliedRate),
+            reference_period: parseInt(referencePeriod),
+            total_amount: parseFloat(totalAmount),
+            paid_amount: parseFloat(paidAmount),
             category,
             hashId,
             companyCUIT,
             paid: paidBool,
-            isBanned: false,
+            is_banned: false,
           });
         }
       }
@@ -147,10 +147,10 @@ class PaymentService {
       const affiliates = await AffiliatePaymentModel.distinct('affiliatedId');
 
       for (const affiliate of affiliates) {
-        const { affiliateId, email } = affiliate as AffiliateI;
+        const { affiliate_id, email } = affiliate as AffiliateI;
 
         const payments = await AffiliatePaymentModel.find({
-          affiliateId,
+          affiliate_id,
           $or: [
             { month: lastMonthMoment },
             { month: oneMonthsAgo },
@@ -160,14 +160,14 @@ class PaymentService {
 
         if (payments.length === 0) {
           console.log(
-            `The affiliate with ID ${affiliateId} Has not paid in the last 3 months. Sending notification...`
+            `The affiliate with ID ${affiliate_id} Has not paid in the last 3 months. Sending notification...`
           );
 
           await EmailHelper.sendNotificationEmail(email, twoMonthsAgo, year);
 
           await AffiliatePaymentModel.updateMany(
-            { affiliateId },
-            { $set: { isBanned: true } }
+            { affiliate_id },
+            { $set: { is_banned: true } }
           );
         }
       }

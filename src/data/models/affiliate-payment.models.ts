@@ -2,25 +2,25 @@ import mongoose, { Document } from 'mongoose';
 
 export interface AffiliateI extends Document {
   dni: number;
-  affiliateId: number;
+  affiliate_id: number;
   name: string;
   email: string;
-  affiliateSince: Date;
-  paymentTypeCode: number;
-  paymentTypeDescription: string;
-  transactionNumber: number;
-  conceptDescription: string;
-  netAmount: number;
+  affiliate_since: Date;
+  payment_type_code: number;
+  payment_type_description: string;
+  transaction_number: number;
+  concept_description: string;
+  net_amount: number;
   taxes: number;
-  appliedRate: number;
-  referencePeriod: number;
-  totalAmount: number;
-  paidAmount: number;
+  applied_rate: number;
+  reference_period: number;
+  total_amount: number;
+  paid_amount: number;
   category: string;
-  hashId: string;
-  companyCUIT: string;
+  hash_id: string;
+  company_CUIT: string;
   paid: boolean;
-  isBanned: boolean;
+  is_banned: boolean;
 }
 
 class PagoAfiliadoModel {
@@ -31,27 +31,27 @@ class PagoAfiliadoModel {
     this.affiliatePaymentSchema = new mongoose.Schema(
       {
         dni: { type: Number, unique: false, required: true },
-        affiliateId: { type: Number, unique: false, required: true },
+        affiliate_id: { type: Number, unique: false, required: true },
         name: { type: String, required: true },
         email: { type: String, required: true },
-        affiliateSince: { type: Date, required: true },
+        affiliate_since: { type: Date, required: true },
         month: { type: String, required: true },
         year: { type: String, required: true },
-        paymentTypeCode: { type: Number, required: true },
-        paymentTypeDescription: { type: String, required: true },
-        transactionNumber: { type: Number, required: true },
-        conceptDescription: { type: String, required: true },
-        netAmount: { type: Number, required: true },
+        payment_type_code: { type: Number, required: true },
+        payment_type_description: { type: String, required: true },
+        transaction_number: { type: Number, required: true },
+        concept_description: { type: String, required: true },
+        net_amount: { type: Number, required: true },
         taxes: { type: Number, required: true },
-        appliedRate: { type: Number, required: true },
-        referencePeriod: { type: Number, required: true },
-        totalAmount: { type: Number, required: true },
-        paidAmount: { type: Number, required: true },
+        applied_rate: { type: Number, required: true },
+        reference_period: { type: Number, required: true },
+        total_amount: { type: Number, required: true },
+        paid_amount: { type: Number, required: true },
         category: { type: String, required: true },
-        hashId: { type: String, required: true },
-        companyCUIT: { type: String, required: true },
+        hash_id: { type: String, required: true },
+        company_CUIT: { type: String, required: true },
         paid: { type: Boolean, default: false, required: true },
-        isBanned: { type: Boolean, default: false, required: true },
+        is_banned: { type: Boolean, default: false, required: true },
       },
       {
         timestamps: true,
