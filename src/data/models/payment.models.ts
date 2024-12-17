@@ -1,11 +1,8 @@
 import mongoose, { Document } from 'mongoose';
 
-export interface AffiliateI extends Document {
-  dni: number;
-  affiliate_id: number;
-  name: string;
-  email: string;
-  affiliate_since: Date;
+export interface PaymentI extends Document {
+  month: number;
+  year: number;
   payment_type_code: number;
   payment_type_description: string;
   transaction_number: number;
@@ -20,23 +17,22 @@ export interface AffiliateI extends Document {
   hash_id: string;
   company_CUIT: string;
   paid: boolean;
-  is_banned: boolean;
 }
 
-class PagoAfiliadoModel {
-  affiliatePaymentSchema: mongoose.Schema;
-  affiliate: mongoose.Model<AffiliateI>;
+class PaymentModel {
+  paymentSchema: mongoose.Schema;
+  payment: mongoose.Model<PaymentI>;
 
   constructor() {
-    this.affiliatePaymentSchema = new mongoose.Schema(
+    this.paymentSchema = new mongoose.Schema(
       {
-        dni: { type: Number, unique: false, required: true },
-        affiliate_id: { type: Number, unique: false, required: true },
-        name: { type: String, required: true },
-        email: { type: String, required: true },
-        affiliate_since: { type: Date, required: true },
-        month: { type: String, required: true },
-        year: { type: String, required: true },
+        affiliate_oid: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Affiliate',
+          required: true,
+        },
+        month: { type: Number, required: true },
+        year: { type: Number, required: true },
         payment_type_code: { type: Number, required: true },
         payment_type_description: { type: String, required: true },
         transaction_number: { type: Number, required: true },
@@ -51,18 +47,15 @@ class PagoAfiliadoModel {
         hash_id: { type: String, required: true },
         company_CUIT: { type: String, required: true },
         paid: { type: Boolean, default: false, required: true },
-        is_banned: { type: Boolean, default: false, required: true },
       },
       {
         timestamps: true,
-        collection: 'kairox',
+        collection: 'payments',
       }
     );
 
-    this.affiliate = mongoose.model<AffiliateI>(
-      'affiliate_payment',
-      this.affiliatePaymentSchema
-    );
+    this.payment = mongoose.model<PaymentI>('Payment', this.paymentSchema);
   }
 }
-export default new PagoAfiliadoModel().affiliate;
+
+export default new PaymentModel().payment;

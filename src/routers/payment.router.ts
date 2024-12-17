@@ -1,5 +1,5 @@
 import express, { NextFunction, Request, Response } from 'express';
-import MulterConfiguration from '../config/multer/multer.docs';
+import MulterConfiguration from '../config/multer/multer.config';
 import PagoService from '../services/affiliate-payment.service';
 
 class PaymentRouter {
