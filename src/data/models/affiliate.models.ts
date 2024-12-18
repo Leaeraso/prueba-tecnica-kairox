@@ -6,6 +6,7 @@ export interface AffiliateI extends Document {
   name: string;
   email: string;
   affiliate_since: Date;
+  created_at: Date;
 }
 
 class AffiliateModel {
@@ -25,9 +26,9 @@ class AffiliateModel {
         email: { type: String, required: true },
         affiliate_since: { type: Date, required: true },
         is_active: { type: Boolean, required: true, default: false },
+        created_at: { type: Date, default: Date.now },
       },
       {
-        timestamps: true,
         collection: 'affiliates',
       }
     );
