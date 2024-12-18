@@ -25,12 +25,9 @@ class PaymentService {
       }
 
       if (fs.existsSync(filePath)) {
-        console.log(
-          `El archivo ${file.filename} ya fue cargado con anterioridad`
-        );
+        console.log(`The file ${file.filename} has already been uploads`);
         return {
-          message:
-            'El archivo que se intenta cargar ya fue cargado anteriormente',
+          message: 'The file has arleady been upload',
         };
       }
 

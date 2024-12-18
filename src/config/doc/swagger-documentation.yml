@@ -1,0 +1,223 @@
+openapi: 3.0.3
+info:
+  title: Documentación prueba técnica Kairox
+  description: |-
+    Esta es la documentación de la API del Sindicato Fuerzas Del Cielo, hecho con NodeJS utilizando Express, Mongoose como ORM de MongoDB, TypeScript, momentJS, entre otras tecnologias. Para ver a detalle la API Restful mirar en el repositorio: [https://github.com/Leaeraso/prueba-tecnica-kairox](https://github.com/Leaeraso/prueba-tecnica-kairox).
+
+  version: 1.0.11
+tags:
+  - name: affiliate
+    description: Endpoints para ver estados de los afiliados y subir archivos.
+paths:
+  /affiliate/payment:
+    post:
+      tags:
+        - affiliate
+      summary: Procesar archivos de pago
+      description: Se procesan el archivo de pago de los afiliados persistiendo los pagos y nuevos afiliados en la base de datos.
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+        description: Archivo con los pagos de los afiliados.
+        required: true
+      responses:
+        "200":
+          description: file processed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UploadFileResponse"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/UploadFileResponse"
+        "400":
+          description: The file has already been uploaded
+        "500":
+          description: Error processing the file
+
+  /affiliate/payments/{id}:
+    get:
+      tags:
+        - affiliate
+      summary: Obtener estado de cuenta de los afiliados.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      description: Se obtiene el estado de la cuenta de los afiliados.
+      responses:
+        "200":
+          description: devuelve una lista de los afiliados con sus estados
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Affiliate"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/Affiliate"
+        "400":
+          description: No payments found for affiliate || Affiliate not found
+        "500":
+          description: Error obtaining the affiliate's payments
+
+  /affiliate/inactives:
+    get:
+      tags:
+        - affiliate
+      summary: Obtener afiliados con 3 meses de deuda.
+      description: Se obtienen los afiliados con 3 meses de deuda indicando los meses debidos.
+      responses:
+        "200":
+          description: devuelve una lista de los afiliados con sus meses de deuda
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InactiveAffiliatesResponse"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/InactiveAffiliatesResponse"
+        "400":
+          description: No payments found for affiliate
+        "500":
+          description: Error obtaining the affiliate's payments
+components:
+  schemas:
+    Affiliate:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: uuid
+          example: 676336ac47ba4f32bb6db959
+        dni:
+          type: number
+          format: int64
+          example: 36953479
+        affiliate_id:
+          type: number
+          format: int32
+          example: 50005181740
+        name:
+          type: string
+          example: PINTOS CARLOS HECTOR
+        email:
+          type: string
+          example: pintoscarloshector@example.com
+        affiliate_since:
+          type: string
+          example: 2024-05-19T15:08:05.000+00:00
+        is_active:
+          type: boolean
+          example: false
+        created_at:
+          type: string
+          example: 2024-12-18T20:55:08.624+00:00
+        _v:
+          type: number
+          format: int32
+          example: 0
+      xml:
+        name: affiliate
+    Payment:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: uuid
+          example: 676336ac47ba4f32bb6db95b
+        affiliate_oid:
+          $ref: "#/components/schemas/Affiliate"
+        month:
+          type: number
+          format: int32
+          example: 4
+        year:
+          type: number
+          format: int32
+          example: 2024
+        payment_type_code:
+          type: number
+          format: int32
+          example: 1
+        payment_type_description:
+          type: string
+          example: Permanente con Importe
+        transaction_number:
+          type: number
+          format: int32
+          example: 397753
+        concept_description:
+          type: string
+          example: SERVICIOS ESPECIALES FUERZAS DEL CIELO
+        net_amount:
+          type: number
+          format: float64
+          example: 50.00
+        taxes:
+          type: number
+          format: float64
+          example: 00.00
+        applied_rate:
+          type: number
+          format: float64
+          example: 00.00
+        reference_period:
+          type: number
+          format: int32
+          example: 397753
+        total_amount:
+          type: number
+          format: float64
+          example: 50.00
+        paid_amount:
+          type: number
+          format: float64
+          example: 50.00
+        category:
+          type: string
+          example: Vitalicio 06-2011
+        hash_id:
+          type: string
+          example: 42658D60FF7C22EBE73EAEB256446C5C9DAF2505
+        company_CUIT:
+          type: string
+          example: 20213798627
+        paid:
+          type: boolean
+          example: true
+        createdAt:
+          type: string
+          example: 2024-12-18T20:55:08.637+00:00
+        updatedAt:
+          type: string
+          example: 2024-12-18T20:55:08.637+00:00
+      xml:
+        name: payment
+    UploadFileResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: file successfully processed
+    InactiveAffiliatesResponse:
+      type: object
+      properties:
+        affiliate_id:
+          type: number
+          format: int32
+        name:
+          type: string
+        month:
+          type: number
+          format: int32
+        year:
+          type: number
+          format: int32

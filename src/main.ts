@@ -3,12 +3,10 @@ import morgan from 'morgan';
 import dotenv from 'dotenv';
 import { Connection } from './config/database/connection.database';
 import PagoRouter from './routers/payment.router';
-import path from 'path';
-import fs from 'fs';
+import swaggerDoc from './config/doc/swagger-documentation.yml';
+import swaggerUi from 'swagger-ui-express';
 
 dotenv.config();
-
-const uploadsDir = path.join(__dirname, '../dist/uploads');
 
 class Main {
   public app: express.Application;
@@ -20,11 +18,15 @@ class Main {
     this.app.use(express.json());
     this.app.use(morgan('dev'));
     this.app.use(PagoRouter);
+    this.app.use(
+      '/documentation',
+      swaggerUi.serve,
+      swaggerUi.setup(swaggerDoc)
+    );
 
     new Connection();
 
     this.listen();
-    this.clearUploadsFolder();
   }
 
   public listen() {
@@ -32,27 +34,6 @@ class Main {
       console.log(`server running on ${this.API_URL}:${this.PORT}`);
     });
   }
-
-  clearUploadsFolder = () => {
-    fs.readdir(uploadsDir, (err, files) => {
-      if (err) {
-        console.error('Error al leer la carpeta de uploads:', err);
-        return;
-      }
-
-      files.forEach((file) => {
-        const filePath = path.join(uploadsDir, file);
-
-        fs.unlink(filePath, (err) => {
-          if (err) {
-            console.error('Error al eliminar el archivo:', file, err);
-          } else {
-            console.log('Archivo eliminado:', file);
-          }
-        });
-      });
-    });
-  };
 }
 
 new Main();
